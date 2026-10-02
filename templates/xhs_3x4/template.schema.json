@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xhs-one-click-publish/local/template.schema.json",
+  "title": "XHS 3:4 Deterministic Template",
+  "description": "小红书 1080x1440 确定性排版模板。设计规则载体：区域、字体层级、裁切、安全边距、溢出策略全部声明在此，渲染器只负责按规则测量与绘制。参考思想：Polotno JSON Schema（元素字段/品牌锁定）、satori（固定画布+字体注册）、guizang（字号角色+质检门禁）。零第三方代码。",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "layout", "canvas", "background", "slots"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1, "description": "模板结构版本，用于未来迁移" },
+    "kind": { "type": "string", "const": "layout_template" },
+    "layout": {
+      "type": "string",
+      "enum": ["cover", "content_step", "content_list", "content_summary"],
+      "description": "版式角色：封面 / 步骤页 / 清单页 / 总结页"
+    },
+    "canvas": {
+      "type": "object",
+      "description": "硬性画布契约：width==1080 && height==1440，任何偏差 FAIL",
+      "required": ["width", "height", "safeMargin"],
+      "properties": {
+        "width": { "type": "integer", "const": 1080 },
+        "height": { "type": "integer", "const": 1440 },
+        "safeMargin": { "type": "integer", "minimum": 0, "description": "安全边距(px)，所有 slot 盒模型不得越界" }
+      }
+    },
+    "theme": { "type": "string", "description": "主题令牌文件引用（颜色/字号阶/间距/圆角），模板内禁止裸 hex" },
+    "fonts": { "type": "string", "description": "字体注册文件引用：role -> 本机字体路径 + fallback 链" },
+    "background": {
+      "type": "object",
+      "description": "全幅背景：AI 素材，cover 裁切；可叠加统一色调 wash 与顶部 scrim 保证文字对比度",
+      "required": ["sourceKey", "fit"],
+      "properties": {
+        "sourceKey": { "type": "string", "description": "对应 page_data.assets 的键" },
+        "fit": { "type": "string", "enum": ["cover", "contain"] },
+        "anchor": { "type": "string", "enum": ["center", "top", "bottom", "left", "right", "top_left", "top_right", "bottom_left", "bottom_right"] },
+        "wash": {
+          "type": "object",
+          "description": "全图统一色调薄层",
+          "properties": { "colorToken": { "type": "string" }, "alpha": { "type": "integer", "minimum": 0, "maximum": 255 } }
+        },
+        "scrim": {
+          "type": "array",
+          "description": "渐变压色层，保证文字区域对比度（不是白卡片）",
+          "items": {
+            "type": "object",
+            "required": ["direction", "stops"],
+            "properties": {
+              "direction": { "type": "string", "enum": ["top", "bottom", "left", "right"] },
+              "colorToken": { "type": "string" },
+              "stops": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["y", "alpha"],
+                  "properties": {
+                    "y": { "type": "number", "minimum": 0, "maximum": 1, "description": "沿方向的归一化位置" },
+                    "alpha": { "type": "integer", "minimum": 0, "maximum": 255 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "slots": {
+      "type": "array",
+      "minItems": 1,
+      "description": "区域槽位：主标题/副标题/标签胶囊/正文/图片主体/装饰/STEP标识/总结/页脚 全部由 slot 表达",
+      "items": { "$ref": "#/$defs/slot" }
+    }
+  },
+  "$defs": {
+    "box": {
+      "type": "object",
+      "required": ["x", "y", "width", "height"],
+      "description": "绝对盒模型 [px]。坐标原点左上。盒模型必须在安全区内。",
+      "properties": {
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "editability": {
+      "type": "string",
+      "enum": ["locked", "contentOnly", "bounded"],
+      "description": "locked=结构样式全锁定；contentOnly=仅可换文案(标题/正文)；bounded=可在盒模型与锚点约束内替换(图片槽)"
+    },
+    "textStyle": {
+      "type": "object",
+      "description": "文字角色样式：颜色/对齐/行距/字距/底色块/马克笔高亮，颜色只允许引用 theme 令牌",
+      "properties": {
+        "colorToken": { "type": "string", "description": "文字色令牌" },
+        "lineColors": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "逐行颜色令牌（如双色标题），缺省用 colorToken"
+        },
+        "align": { "type": "string", "enum": ["left", "center", "right"] },
+        "verticalAlign": { "type": "string", "enum": ["top", "middle", "bottom"] },
+        "lineHeight": { "type": "number", "exclusiveMinimum": 0, "description": "行距倍数覆盖；压缩阶梯允许在 role 声明范围内下调" },
+        "letterSpacing": { "type": "number", "minimum": 0, "description": "额外字距 px（中英文混排/英文小标使用）" },
+        "backgroundToken": { "type": "string", "description": "文字底色块颜色令牌（胶囊/提示框）" },
+        "backgroundAlpha": { "type": "integer", "minimum": 0, "maximum": 255 },
+        "backgroundPadding": { "type": "array", "items": { "type": "number" }, "description": "[px, py] 或 [p]" },
+        "cornerRadius": { "type": "number" },
+        "marker": {
+          "type": "object",
+          "description": "马克笔高亮：衬在指定行文字下方的半透明色块",
+          "properties": {
+            "lineIndex": { "type": "integer", "minimum": 0 },
+            "colorToken": { "type": "string" },
+            "alpha": { "type": "integer", "minimum": 0, "maximum": 255 },
+            "padX": { "type": "number" },
+            "padY": { "type": "number" },
+            "radius": { "type": "number" }
+          }
+        }
+      }
+    },
+    "overflowPolicy": {
+      "type": "object",
+      "description": "超长文字处理：先压缩行距/内边距，仍超必须 FAIL；禁止缩到最小字号以下，禁止静默裁切",
+      "properties": {
+        "strategy": { "type": "string", "enum": ["fail", "compress_then_fail"], "default": "compress_then_fail" },
+        "minLineHeight": { "type": "number", "description": "行距倍数下限" },
+        "minPaddingY": { "type": "number", "description": "内边距下限 px" }
+      }
+    },
+    "mediaFit": {
+      "type": "object",
+      "properties": {
+        "fit": { "type": "string", "enum": ["cover", "contain"], "description": "cover=填满裁切；contain=完整显示(留白由背景承接)" },
+        "anchor": { "type": "string", "enum": ["center", "top", "bottom", "left", "right", "top_left", "top_right", "bottom_left", "bottom_right"] },
+        "maxScale": { "type": "number", "description": "最大放大倍数，防止小素材被拉大发虚" },
+        "margin": { "type": "number", "description": "素材与盒模型的最小内边距 px" },
+        "cornerRadius": { "type": "number" },
+        "trimTransparent": { "type": "boolean", "description": "缩放前先按 alpha 包围盒裁掉透明边，让主体按实际像素吃满盒模型" },
+        "rotation": { "type": "number", "description": "旋转角度(度)，装饰素材用；旋转后重新计算 alpha 包围盒" },
+        "shadow": {
+          "type": "object",
+          "description": "程序生成的软接触阴影（主体接地，不依赖 AI 画阴影）",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "colorToken": { "type": "string" },
+            "alpha": { "type": "integer", "minimum": 0, "maximum": 255 },
+            "blur": { "type": "number" },
+            "offsetY": { "type": "number" },
+            "widthRatio": { "type": "number", "description": "阴影宽=素材包围盒宽*ratio" },
+            "heightRatio": { "type": "number" }
+          }
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": ["id", "type", "band", "box"],
+      "properties": {
+        "id": { "type": "string", "description": "槽位唯一标识，也用于 keepOut 引用与校验报告" },
+        "type": {
+          "type": "string",
+          "enum": ["text", "step_row", "media", "shape", "tag_row"],
+          "description": "text=标题/副标题/正文/胶囊文字；step_row=序号步骤组(STEP标识)；media=图片主体/装饰；shape=分隔线等装饰；tag_row=底部标签"
+        },
+        "band": { "type": "integer", "minimum": 1, "maximum": 4, "description": "所属信息带(画布四等分)，用于密度校验" },
+        "box": { "$ref": "#/$defs/box" },
+        "required": { "type": "boolean", "description": "内容必填，缺失或为空则 FAIL" },
+        "editability": { "$ref": "#/$defs/editability" },
+        "allowStyleOverrides": { "type": "boolean", "description": "false=数据侧不允许改样式，只能填内容" },
+        "keepOutMargin": { "type": "number", "description": "与其他元素碰撞检测的额外安全间距 px" },
+        "contentKey": { "type": "string", "description": "绑定 page_data.content 的字段" },
+        "role": {
+          "type": "string",
+          "enum": ["hero", "section", "lead", "body", "caption", "micro", "number", "tag"],
+          "description": "字体层级角色：决定字号/字重/行距/最小字号地板，取自 theme.typeScale"
+        },
+        "style": { "$ref": "#/$defs/textStyle" },
+        "maxLines": { "type": "integer", "minimum": 1, "description": "最大行数（自动换行后超出即溢出）" },
+        "maxChars": { "type": "integer", "minimum": 1, "description": "字符预算（换行符不计），粗校验先行" },
+        "overflow": { "$ref": "#/$defs/overflowPolicy" },
+        "kinsoku": { "type": "boolean", "description": "是否启用中文避头尾（标点不落在行首/行尾）" },
+        "stepRow": {
+          "type": "object",
+          "description": "type=step_row：固定数量步骤单元（圆圈序号+中文词+英文小标+连接线）",
+          "properties": {
+            "columns": { "type": "integer" },
+            "minItems": { "type": "integer" },
+            "maxItems": { "type": "integer" },
+            "circle": {
+              "type": "object",
+              "properties": {
+                "radius": { "type": "number" },
+                "strokeWidth": { "type": "number" },
+                "strokeToken": { "type": "string" },
+                "fillToken": { "type": "string" }
+              }
+            },
+            "numberRole": { "type": "string" },
+            "labelRole": { "type": "string" },
+            "enRole": { "type": "string" },
+            "labelMaxChars": { "type": "integer" },
+            "connector": {
+              "type": "object",
+              "properties": { "colorToken": { "type": "string" }, "width": { "type": "number" } }
+            }
+          }
+        },
+        "media": {
+          "type": "object",
+          "description": "type=media：图片主体/装饰区域。AI 素材只能进媒体槽",
+          "required": ["assetRole", "fit"],
+          "properties": {
+            "assetRole": { "type": "string", "enum": ["subject", "decoration"], "description": "subject=视觉主体；decoration=装饰元素" },
+            "sourceKey": { "type": "string" },
+            "fit": { "type": "string", "enum": ["cover", "contain"] },
+            "anchor": { "type": "string" },
+            "maxScale": { "type": "number" },
+            "margin": { "type": "number" },
+            "trimTransparent": { "type": "boolean" },
+            "rotation": { "type": "number" },
+            "shadow": { "type": "object" },
+            "keepOut": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "禁止遮挡的文字槽 id 列表；按素材实际 alpha 包围盒求交"
+            }
+          }
+        },
+        "shape": {
+          "type": "object",
+          "description": "type=shape：分隔线/圆点等程序化装饰（不占内容语义）",
+          "properties": {
+            "shape": { "type": "string", "enum": ["rect", "rule", "circle"] },
+            "colorToken": { "type": "string" },
+            "alpha": { "type": "integer", "minimum": 0, "maximum": 255 },
+            "cornerRadius": { "type": "number" }
+          }
+        },
+        "tagRow": {
+          "type": "object",
+          "description": "type=tag_row：底部标签行",
+          "properties": {
+            "role": { "type": "string" },
+            "colorToken": { "type": "string" },
+            "gap": { "type": "number" }
+          }
+        }
+      }
+    }
+  }
+}

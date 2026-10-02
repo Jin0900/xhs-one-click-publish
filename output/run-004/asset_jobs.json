@@ -1,0 +1,29 @@
+{
+  "_comment": "节点②视觉拆分 -> 节点③素材任务。subject/decoration 直出透明 PNG（无抠图节点）；background 为不透明氛围背景。已存在的文件默认跳过。",
+  "jobs": [
+    {
+      "key": "subject",
+      "file": "assets/main_subject.png",
+      "transparent": true,
+      "quality": "medium",
+      "size": "1024x1024",
+      "prompt": "A minimalist white skincare lotion bottle with a pump dispenser, standing upright and centered, single isolated object, professional product photography, fully transparent background, true alpha channel, clean cutout edges, no scenery, no solid backdrop, no checkerboard, no ground plane, no cast shadow, soft even studio lighting on the object itself, sharp focus, high resolution, no label text, no logo, no brand, no watermark, no people"
+    },
+    {
+      "key": "decoration",
+      "file": "assets/element_1.png",
+      "transparent": true,
+      "quality": "medium",
+      "size": "1024x1024",
+      "prompt": "A small cluster of fresh vibrant green plant leaves with clear water droplets, single isolated decorative sprig, botanical macro photography style, fully transparent background, true alpha channel, clean cutout edges, no scenery, no solid backdrop, no checkerboard, no ground, no vase, no cast shadow, soft natural lighting on the leaves only, sharp focus, high resolution, no text, no logo, no watermark, no people"
+    },
+    {
+      "key": "background",
+      "file": "assets/element_2.png",
+      "transparent": false,
+      "quality": "auto",
+      "size": "1024x1536",
+      "prompt": "Soft bright summer sunlight through sheer curtains, gentle light blue to warm cream gradient background, airy breezy minimal atmosphere, empty scene with no objects, high resolution, no text, no logo, no watermark, no people"
+    }
+  ]
+}

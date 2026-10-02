@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "run": "run-004",
+  "title": "夏季护肤做减法，三步就够了",
+  "content": "夏天护肤别再做加法了，三步就够：\n\n① 温和清洁：早晨只用清水洗脸，晚上一支温和洁面即可。没有浓妆就不必二次清洁，洗得越轻，屏障越稳。\n\n② 精简保湿：水乳二选一就够，干燥季再加一支面霜封层。精华不必叠满五层，选准神经酰胺或玻尿酸其中之一。\n\n③ 足量防晒：出门前二十分钟涂足一元硬币量，每两小时补涂一次。\n\n把省下的步骤还给皮肤，它自己会给你答案。\n\n#夏季护肤 #精简护肤 #防晒",
+  "images": [
+    {
+      "role": "cover",
+      "file": "01_cover.png",
+      "path": "D:\\Traeeeeee\\小红书skill\\xhs-one-click-publish\\output\\run-004\\final\\01_cover.png",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "role": "page1",
+      "file": "02_page1.png",
+      "path": "D:\\Traeeeeee\\小红书skill\\xhs-one-click-publish\\output\\run-004\\final\\02_page1.png",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "role": "page2",
+      "file": "03_page2.png",
+      "path": "D:\\Traeeeeee\\小红书skill\\xhs-one-click-publish\\output\\run-004\\final\\03_page2.png",
+      "width": 1080,
+      "height": 1440
+    },
+    {
+      "role": "page3",
+      "file": "04_page3.png",
+      "path": "D:\\Traeeeeee\\小红书skill\\xhs-one-click-publish\\output\\run-004\\final\\04_page3.png",
+      "width": 1080,
+      "height": 1440
+    }
+  ],
+  "order": [
+    "cover",
+    "page1",
+    "page2",
+    "page3"
+  ],
+  "status": "ready_for_review",
+  "validation": {
+    "render_success": true,
+    "errors": [],
+    "warnings": []
+  }
+}

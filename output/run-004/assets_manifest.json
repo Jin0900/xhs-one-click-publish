@@ -1,0 +1,68 @@
+{
+  "all_ok": true,
+  "assets": [
+    {
+      "key": "subject",
+      "file": "assets/main_subject.png",
+      "transparent": true,
+      "skipped": true,
+      "ok": true,
+      "reason": "透明素材验收通过",
+      "mode": "RGBA",
+      "width": 1254,
+      "height": 1254,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentShare": 0.7296,
+      "opaqueShare": 0.2662,
+      "partialShare": 0.0042
+    },
+    {
+      "key": "decoration",
+      "file": "assets/element_1.png",
+      "transparent": true,
+      "skipped": false,
+      "ok": true,
+      "reason": "透明素材验收通过",
+      "bytes": 1423565,
+      "md5": "a26f4f103586767247fb489c19ad7752",
+      "taskId": "task_01M3XBX1VHSKQC2Z8KY6R7J7PT",
+      "mode": "RGBA",
+      "width": 1254,
+      "height": 1254,
+      "cornerAlpha": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparentShare": 0.6762,
+      "opaqueShare": 0.3086,
+      "partialShare": 0.0153
+    },
+    {
+      "key": "background",
+      "file": "assets/element_2.png",
+      "transparent": false,
+      "skipped": true,
+      "ok": true,
+      "reason": "普通素材验收通过",
+      "mode": "RGB",
+      "width": 1024,
+      "height": 1536,
+      "cornerAlpha": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "transparentShare": 0.0,
+      "opaqueShare": 1.0,
+      "partialShare": 0.0
+    }
+  ]
+}

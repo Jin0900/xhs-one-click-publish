@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "topic": "夏季护肤产品",
+  "template": "cover",
+  "content": {
+    "kicker": "夏季护肤 · 指南",
+    "title": "夏季护肤\n做减法",
+    "subtitle": "三步就够了",
+    "steps": [
+      { "label": "清洁", "en": "CLEANSE" },
+      { "label": "保湿", "en": "HYDRATE" },
+      { "label": "防晒", "en": "SUN CARE" }
+    ],
+    "tags": ["#夏季护肤", "#精简护肤"]
+  },
+  "assets": {
+    "background": "../run-002/element_img2.png",
+    "subject": "../run-002/main_image_cutout.png",
+    "decoration": "../run-002/element_img1_cutout.png"
+  }
+}

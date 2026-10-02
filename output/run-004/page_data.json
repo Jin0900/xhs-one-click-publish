@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 2,
+  "topic": "夏季护肤产品",
+  "templates": [
+    "cover",
+    "page1",
+    "page2",
+    "page3"
+  ],
+  "pages": {
+    "cover": {
+      "content": {
+        "kicker": "夏季护肤 · 指南",
+        "title": "夏季护肤\n做减法",
+        "subtitle": "三步就够了",
+        "steps": [
+          {
+            "label": "清洁",
+            "en": "CLEANSE"
+          },
+          {
+            "label": "保湿",
+            "en": "HYDRATE"
+          },
+          {
+            "label": "防晒",
+            "en": "SUN CARE"
+          }
+        ],
+        "tags": [
+          "#夏季护肤",
+          "#精简护肤"
+        ]
+      },
+      "assets": {
+        "background": "assets/element_2.png",
+        "subject": "assets/main_subject.png",
+        "decoration": "assets/element_1.png"
+      }
+    },
+    "page1": {
+      "content": {
+        "kicker": "STEP 1 · 清洁",
+        "heading": "温和清洁",
+        "enLabel": "GENTLE CLEANSE",
+        "body": "早晨只用清水洗脸，晚上一支温和洁面即可。没有浓妆就不必二次清洁，洗得越轻，屏障越稳。",
+        "wordmark": "夏日护肤手册",
+        "pageNo": "01 / 03"
+      },
+      "assets": {
+        "background": "assets/element_2.png",
+        "subject": "assets/main_subject.png",
+        "decoration": "assets/element_1.png"
+      }
+    },
+    "page2": {
+      "content": {
+        "kicker": "STEP 2 · 保湿",
+        "heading": "精简保湿",
+        "enLabel": "LESS IS MORE",
+        "body": "水乳二选一就够，干燥季再加一支面霜封层。精华不必叠满五层，选准神经酰胺或玻尿酸其中之一。",
+        "wordmark": "夏日护肤手册",
+        "pageNo": "02 / 03"
+      },
+      "assets": {
+        "background": "assets/element_2.png",
+        "subject": "assets/main_subject.png",
+        "decoration": "assets/element_1.png"
+      }
+    },
+    "page3": {
+      "content": {
+        "kicker": "STEP 3 · 防晒",
+        "heading": "足量防晒",
+        "enLabel": "DAILY SUNSCREEN",
+        "recap": [
+          "01 清洁",
+          "02 保湿",
+          "03 防晒"
+        ],
+        "body": "出门前二十分钟涂足一元硬币量，每两小时补涂一次。",
+        "tags": [
+          "#夏季护肤",
+          "#精简护肤",
+          "#防晒"
+        ],
+        "wordmark": "夏日护肤手册",
+        "pageNo": "03 / 03"
+      },
+      "assets": {
+        "background": "assets/element_2.png",
+        "subject": "assets/main_subject.png",
+        "decoration": "assets/element_1.png"
+      }
+    }
+  },
+  "publish": {
+    "title": "夏季护肤做减法，三步就够了",
+    "content": "夏天护肤别再做加法了，三步就够：\n\n① 温和清洁：早晨只用清水洗脸，晚上一支温和洁面即可。没有浓妆就不必二次清洁，洗得越轻，屏障越稳。\n\n② 精简保湿：水乳二选一就够，干燥季再加一支面霜封层。精华不必叠满五层，选准神经酰胺或玻尿酸其中之一。\n\n③ 足量防晒：出门前二十分钟涂足一元硬币量，每两小时补涂一次。\n\n把省下的步骤还给皮肤，它自己会给你答案。\n\n#夏季护肤 #精简护肤 #防晒",
+    "images": [
+      "final/01_cover.png",
+      "final/02_page1.png",
+      "final/03_page2.png",
+      "final/04_page3.png"
+    ],
+    "status": "ready_for_review"
+  }
+}

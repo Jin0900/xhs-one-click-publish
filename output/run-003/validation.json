@@ -1,0 +1,58 @@
+{
+  "width": 1080,
+  "height": 1440,
+  "ratio": "3:4",
+  "text_overflow": false,
+  "element_collision": false,
+  "font_valid": true,
+  "render_success": true,
+  "checks": {
+    "V1": {
+      "status": "PASS",
+      "detail": "全部 1 张严格 1080x1440，width/height==0.75"
+    },
+    "V2": {
+      "status": "PASS",
+      "detail": "数量=1，顺序=['01_cover.png']"
+    },
+    "V4": {
+      "status": "PASS",
+      "detail": "无文字溢出，全部在盒模型与行数预算内"
+    },
+    "V3": {
+      "status": "PASS",
+      "detail": "标题 7 字 ≤ 20"
+    },
+    "V5": {
+      "status": "PASS",
+      "detail": "所有文字字号 ≥ role 最小地板"
+    },
+    "V6": {
+      "status": "PASS",
+      "detail": "全部槽位位于 72px 安全区内"
+    },
+    "V7": {
+      "status": "PASS",
+      "detail": "无元素重叠，主体未遮挡文字"
+    },
+    "V8": {
+      "status": "PASS",
+      "detail": "四信息带均有内容，覆盖率=[0.632, 0.583, 0.649, 0.281]"
+    },
+    "V9": {
+      "status": "PASS",
+      "detail": "字体可用: {'bold': 'Microsoft YaHei Bold', 'regular': 'Microsoft YaHei Regular'}，字形抽检通过"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "outputs": [
+    {
+      "key": "cover",
+      "file": "01_cover.png",
+      "width": 1080,
+      "height": 1440,
+      "ratio_ok": true
+    }
+  ]
+}

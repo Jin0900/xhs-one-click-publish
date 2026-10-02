@@ -1,0 +1,5 @@
+# 渲染器依赖。Python 3.13。
+# 说明：仓库内 output/run-002/libs 随样例附带了一份可离线使用的 Pillow 12.3.0，
+# renderer 会在未全局安装 Pillow 时自动回退到该目录；联网环境也可直接：
+#   pip install -r requirements.txt
+Pillow>=12.3,<13

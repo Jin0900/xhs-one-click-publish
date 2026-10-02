@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "description": "字体注册表：role(weight) -> 本机字体文件 + fallback 链。渲染器按顺序加载，首个可用者生效；全部不可用则 font_valid=false 并 FAIL。",
+  "families": [
+    {
+      "role": "bold",
+      "chain": [
+        { "path": "C:/Windows/Fonts/msyhbd.ttc", "index": 0, "label": "Microsoft YaHei Bold" },
+        { "path": "C:/Windows/Fonts/simhei.ttf", "index": 0, "label": "SimHei" }
+      ]
+    },
+    {
+      "role": "regular",
+      "chain": [
+        { "path": "C:/Windows/Fonts/msyh.ttc", "index": 0, "label": "Microsoft YaHei Regular" },
+        { "path": "C:/Windows/Fonts/simhei.ttf", "index": 0, "label": "SimHei" }
+      ]
+    },
+    {
+      "role": "light",
+      "chain": [
+        { "path": "C:/Windows/Fonts/msyhl.ttc", "index": 0, "label": "Microsoft YaHei Light" },
+        { "path": "C:/Windows/Fonts/msyh.ttc", "index": 0, "label": "Microsoft YaHei Regular" }
+      ]
+    }
+  ],
+  "glyphSmokeTest": ["夏", "季", "护", "肤", "做", "减", "法", "清", "洁", "保", "湿", "防", "晒", "精", "简", "指", "南", "三", "步", "就", "够", "了"]
+}

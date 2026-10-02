@@ -1,0 +1,52 @@
+{
+  "run": "run-002",
+  "topic": "夏季护肤产品",
+  "count": 4,
+  "order_rule": "cover -> page1 -> page2 -> page3",
+  "images": [
+    {
+      "order": 1,
+      "key": "cover",
+      "file": "01_cover.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "bytes": 1158347,
+      "md5": "bcbc7777012b507b6b67493f584ffdf0"
+    },
+    {
+      "order": 2,
+      "key": "page1",
+      "file": "02_page1.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "bytes": 842677,
+      "md5": "e05b60373ec01390313444d608689cdf"
+    },
+    {
+      "order": 3,
+      "key": "page2",
+      "file": "03_page2.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "bytes": 861140,
+      "md5": "49fa2ca9f8e1eb997d4cbfb376375608"
+    },
+    {
+      "order": 4,
+      "key": "page3",
+      "file": "04_page3.png",
+      "size_px": [
+        1024,
+        1536
+      ],
+      "bytes": 834694,
+      "md5": "3c583ec1a240e45c98b5ad7641bcfc1b"
+    }
+  ]
+}

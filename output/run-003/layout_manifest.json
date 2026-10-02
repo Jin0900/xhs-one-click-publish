@@ -1,0 +1,278 @@
+{
+  "slots": {
+    "leaf": {
+      "type": "media",
+      "assetRole": "decoration",
+      "box": [
+        648,
+        72,
+        360,
+        234
+      ],
+      "placedSize": [
+        176,
+        234
+      ],
+      "placedPos": [
+        832,
+        72
+      ],
+      "pixelBox": [
+        855,
+        88,
+        997,
+        282
+      ],
+      "keepOut": [
+        "kicker",
+        "title",
+        "subtitle"
+      ],
+      "keepOutMargin": 0
+    },
+    "bottle": {
+      "type": "media",
+      "assetRole": "subject",
+      "box": [
+        720,
+        984,
+        288,
+        384
+      ],
+      "placedSize": [
+        129,
+        384
+      ],
+      "placedPos": [
+        879,
+        984
+      ],
+      "pixelBox": [
+        880,
+        985,
+        1007,
+        1367
+      ],
+      "keepOut": [
+        "kicker",
+        "title",
+        "subtitle",
+        "steps",
+        "tags"
+      ],
+      "keepOutMargin": 0
+    },
+    "accent": {
+      "type": "shape",
+      "box": [
+        72,
+        596,
+        112,
+        8
+      ],
+      "solidRects": [
+        [
+          72,
+          596,
+          184,
+          604
+        ]
+      ],
+      "textRects": []
+    },
+    "kicker": {
+      "type": "text",
+      "role": "tag",
+      "box": [
+        72,
+        86,
+        320,
+        60
+      ],
+      "fontSize": 28,
+      "weight": "bold",
+      "lineHeight": 1.2,
+      "charCount": 7,
+      "maxChars": 12,
+      "maxLines": 1,
+      "lineCount": 1,
+      "lines": [
+        "夏季护肤 · 指南"
+      ],
+      "textRects": [
+        [
+          134.0,
+          106.2,
+          330.0,
+          134.2
+        ]
+      ],
+      "solidRects": [
+        [
+          108.0,
+          90.0,
+          356.0,
+          142.0
+        ]
+      ]
+    },
+    "title": {
+      "type": "text",
+      "role": "hero",
+      "box": [
+        72,
+        208,
+        936,
+        352
+      ],
+      "fontSize": 140,
+      "weight": "bold",
+      "lineHeight": 1.16,
+      "charCount": 7,
+      "maxChars": 8,
+      "maxLines": 2,
+      "lineCount": 2,
+      "lines": [
+        "夏季护肤",
+        "做减法"
+      ],
+      "textRects": [
+        [
+          72,
+          240.0,
+          632.0,
+          377.0
+        ],
+        [
+          72,
+          401.4,
+          492.0,
+          538.4
+        ]
+      ],
+      "solidRects": []
+    },
+    "subtitle": {
+      "type": "text",
+      "role": "lead",
+      "box": [
+        72,
+        632,
+        600,
+        64
+      ],
+      "fontSize": 44,
+      "weight": "regular",
+      "lineHeight": 1.4,
+      "charCount": 5,
+      "maxChars": 8,
+      "maxLines": 1,
+      "lineCount": 1,
+      "lines": [
+        "三步就够了"
+      ],
+      "textRects": [
+        [
+          72,
+          642.0,
+          292.0,
+          686.0
+        ]
+      ],
+      "solidRects": []
+    },
+    "steps": {
+      "type": "step_row",
+      "box": [
+        72,
+        748,
+        936,
+        240
+      ],
+      "textRects": [
+        [
+          184.0,
+          884,
+          272.0,
+          927
+        ],
+        [
+          166.0,
+          942,
+          290.0,
+          962
+        ],
+        [
+          496.0,
+          885,
+          584.0,
+          926
+        ],
+        [
+          474.0,
+          942,
+          606.0,
+          962
+        ],
+        [
+          808.0,
+          884,
+          896.0,
+          927
+        ],
+        [
+          780.5,
+          942,
+          923.5,
+          962
+        ]
+      ],
+      "solidRects": [
+        [
+          188.0,
+          764,
+          268.0,
+          844
+        ],
+        [
+          500.0,
+          764,
+          580.0,
+          844
+        ],
+        [
+          812.0,
+          764,
+          892.0,
+          844
+        ]
+      ],
+      "fontSize": 44
+    },
+    "tags": {
+      "type": "tag_row",
+      "box": [
+        72,
+        1296,
+        600,
+        44
+      ],
+      "fontSize": 28,
+      "textRects": [
+        [
+          72.0,
+          1311.0,
+          202.0,
+          1339.0
+        ],
+        [
+          230.0,
+          1310.0,
+          360.0,
+          1339.0
+        ]
+      ],
+      "solidRects": []
+    }
+  }
+}

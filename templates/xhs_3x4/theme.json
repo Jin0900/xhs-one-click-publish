@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "botanical_summer",
+  "description": "植物系夏日主题：深墨绿文字 + 品牌绿强调 + 柔和浅绿胶囊；克制配色，编辑设计感",
+  "color": {
+    "ink": "#1D3830",
+    "sub": "#5B6F64",
+    "faint": "#8AA097",
+    "brand": "#2F7448",
+    "brand_strong": "#245E3B",
+    "brand_soft": "#DDEFE3",
+    "marker": "#BFE3CC",
+    "hairline": "#C3D8CA",
+    "paper0": "#FFFFFF"
+  },
+  "typeScale": {
+    "hero":    { "size": 140, "lineHeight": 1.16, "weight": "bold",    "minSize": 120, "minLineHeight": 1.08 },
+    "section": { "size": 64,  "lineHeight": 1.25, "weight": "bold",    "minSize": 56,  "minLineHeight": 1.15 },
+    "lead":    { "size": 44,  "lineHeight": 1.4,  "weight": "regular", "minSize": 40,  "minLineHeight": 1.25 },
+    "body":    { "size": 36,  "lineHeight": 1.55, "weight": "regular", "minSize": 32,  "minLineHeight": 1.4 },
+    "caption": { "size": 28,  "lineHeight": 1.4,  "weight": "regular", "minSize": 26,  "minLineHeight": 1.3 },
+    "micro":   { "size": 26,  "lineHeight": 1.3,  "weight": "regular", "minSize": 24,  "minLineHeight": 1.2 },
+    "number":  { "size": 30,  "lineHeight": 1.0,  "weight": "bold",    "minSize": 28,  "minLineHeight": 1.0 },
+    "tag":     { "size": 28,  "lineHeight": 1.2,  "weight": "bold",    "minSize": 26,  "minLineHeight": 1.1 }
+  },
+  "radius": { "chip": 32, "card": 36, "small": 16 },
+  "space": { "bandGap": 36, "chipPadX": 26, "chipPadY": 12 },
+  "density": { "bands": 4, "minActiveRatio": 0.72, "maxEmptyBandPx": 216 }
+}
