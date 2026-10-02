@@ -13,4 +13,8 @@ venv/
 # 临时/探测文件
 *.tmp
 *.bak
+
+# 小红书发布本地工作目录（登录态/人工确认信号/过程截图，严禁提交）
+.publish/
+**/.publish/
 output/run-002/libs/

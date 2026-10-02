@@ -3,3 +3,6 @@
 # renderer 会在未全局安装 Pillow 时自动回退到该目录；联网环境也可直接：
 #   pip install -r requirements.txt
 Pillow>=12.3,<13
+
+# 浏览器真实发布（最后一公里）。复用本机已安装的 Chrome/Edge，无需 playwright install chromium
+playwright>=1.49

@@ -1,0 +1,16 @@
+{
+  "status": "published",
+  "published_at": "2026-10-02T23:36:44+08:00",
+  "run": "run-004",
+  "platform": "xiaohongshu_creator",
+  "title": "夏季护肤做减法，三步就够了",
+  "images_count": 4,
+  "images_in_order": ["01_cover.png", "02_page1.png", "03_page2.png", "04_page3.png"],
+  "signal": "manual_click_and_confirmation",
+  "evidence": {
+    "automated": "pipeline/publish_xhs.py 完成打开平台、扫码登录态持久化、4 图上传、标题/正文自动填充（见 .publish/06_filled.png，该目录不入库）",
+    "publish_action": "人工在浏览器中点击「发布」按钮",
+    "verification": "用户人工确认笔记已真实发布（小红书创作服务平台）",
+    "note": "本次为真实账号端到端验证；程序内置强成功信号（跳转作品管理/发布成功 toast）判定代码保留，供后续全自动复跑使用"
+  }
+}

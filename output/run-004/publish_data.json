@@ -39,7 +39,13 @@
     "page2",
     "page3"
   ],
-  "status": "ready_for_review",
+  "status": "published",
+  "published_at": "2026-10-02T23:36:44+08:00",
+  "publish_result": {
+    "platform": "xiaohongshu_creator",
+    "signal": "manual_click_and_confirmation",
+    "note": "图片/标题/正文由 pipeline/publish_xhs.py 自动填充；发布按钮由人工在浏览器点击，发布结果经人工目检确认成功（2026-10-02 端到端真实发布）。"
+  },
   "validation": {
     "render_success": true,
     "errors": [],
