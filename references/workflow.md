@@ -72,7 +72,7 @@
 | ⑥–⑨ 封面/内容页制作 | 模板盒模型 + Pillow 确定性渲染，一次渲染四页并逐页校验 | [renderer/render_cli.py](../renderer/render_cli.py)、[templates/xhs_3x4/](../templates/xhs_3x4/cover.json) |
 | ⑩ 图片整理/内容组合 | 输出文件名固定 01_cover.png → 04_page3.png，顺序由渲染器固定保证 | [renderer/render_cli.py](../renderer/render_cli.py) |
 | ⑪ 发布准备 | 校验通过后组装 publish_data.json，status=ready_for_review，等待人工确认 | [pipeline/assemble_publish.py](../pipeline/assemble_publish.py) |
-| ⑬ 发布 | v0.1 不实现自动发布；Playwright 自动发布列入 v0.2 规划 | — |
+| ⑬ 发布 | 已实现：pipeline/publish_xhs.py（Playwright 本机 Chrome/Edge）；首次人工扫码、人工确认闸口后发布，强成功信号判定，回写 status=published；2026-10-02 run-004 真实发布验证通过 | [pipeline/publish_xhs.py](../pipeline/publish_xhs.py) |
 
 ---
 
@@ -405,7 +405,7 @@ images = [
 
 - 人工确认通过，才能执行最终发布
 - 发现问题则退回修改，修改后重新进入人工确认
-- v0.1 中发布准备包的 `status` 停留在 `ready_for_review`，**人工确认通过后才允许流转到发布**；流程不自动发布
+- 发布准备包 `status` 在确认前为 `ready_for_review`；**人工确认放行后才允许浏览器执行发布**，程序不做无人值守发布；发布确认成功后才流转 `published`
 
 ---
 
@@ -413,18 +413,23 @@ images = [
 
 **输入**
 
-- 确认通过的发布数据包
+- 人工确认放行后的发布数据包（publish_data.json）
 
 **输出**
 
-- 发布结果：发布状态、时间信息、分享页面信息、平台返回结果
-- 或完整待发布内容（外部发布工具不可用时）
+- 平台发布结果；publish_data.json 更新 `status=published` + `published_at`
+- publish_result.json：状态、时间、成功信号（`auto:url_changed` / `auto:toast_text` / `manual:*` 如实区分）、结果页 URL、截图
+
+**v0.1 实现方式（2026-10-02 已真实跑通）**
+
+由 [pipeline/publish_xhs.py](../pipeline/publish_xhs.py) 用 Playwright 驱动本机 Chrome/Edge 完成：持久化登录态（首次人工扫码）→ 进入图文发布页 → 按序上传 4 图（智能等待预览稳定）→ 填写标题正文（轮询回读校验）→ 文件信号人工确认闸口 → 点击发布（处理二次确认弹窗）→ 强成功信号判定（跳转作品管理页 /「发布成功」提示，证据不足转人工裁定，防止误入草稿箱）。
 
 **处理规则**
 
-- 如果外部发布工具可用且人工确认通过，将标题、正文、图片、账号提交给发布工具执行发布
-- 如果发布工具返回失败：不重复提交，保留当前标题、正文和 4 张图片，保存错误信息，等待人工处理
-- 如果发布工具不可用：输出完整待发布内容，不假装已经发布
+- 登录失效、验证码、滑块：立即暂停并保留现场，交人工处理，不做任何绕过；登录失效会明确提示，不误判为发布失败
+- 自动判定失败：不重复提交，publish_data.json 不改动，写清 stage/reason/截图到 publish_result.json，等待人工处理
+- 证据不足（unknown）：保留浏览器现场，由人工目检后给信号，或事后用 `mark` 子命令裁定
+- 只在有明确成功证据（或人工裁定）时才写 `published`，绝不把"点过按钮"当成发布成功
 
 ---
 

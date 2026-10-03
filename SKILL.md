@@ -185,7 +185,7 @@ cover → page1 → page2 → page3
 | ⑩ 图片整理/内容组合 | cover、page1、page2、page3 | 4 张图片固定有序集合（01_cover.png → 04_page3.png） |
 | ⑪ 发布准备 | 标题、正文、图片集合、账号 | `publish_data.json`（status=ready_for_review） |
 | ⑫ 人工确认 | 最终发布数据 | 确认通过 / 退回修改 |
-| ⑬ 发布 | 确认通过的发布数据 | 发布结果或待发布内容（v0.1 不自动发布） |
+| ⑬ 发布 | 人工确认放行后的发布数据 | 平台发布结果；publish_data.json 流转 `published` + publish_result.json（2026-10-02 已真实跑通） |
 
 数据传递原则：上游节点的输出必须能够成为下游节点的有效输入；关键字段为空时必须停止后续流程，定位字段来源并重新生成，不能让空字段继续传递到发布环节。
 
@@ -230,7 +230,7 @@ cover → page1 → page2 → page3
 }
 ```
 
-`status` 固定为 `ready_for_review`（等待人工确认）；只有人工确认通过后才允许进入发布环节，流程不会自动发布。
+`status` 在发布准备阶段为 `ready_for_review`（等待人工确认）；只有人工确认通过后才允许进入发布环节，程序不做无人值守发布。浏览器发布（[pipeline/publish_xhs.py](pipeline/publish_xhs.py)）确认成功后才流转为 `published`（含 `published_at`），并写 publish_result.json；自动信号（`auto:url_changed` / `auto:toast_text`）与人工裁定（`manual:*`）如实区分记录。
 
 ### 字段约束
 
@@ -293,11 +293,12 @@ Skill 只组织流程，实际执行依赖以下真实工具。Skill 不虚构�
 - **素材生成节点**：[pipeline/generate_assets.py](pipeline/generate_assets.py)——按 `asset_jobs.json` 生成三张素材并执行 alpha 验收门禁（RGBA/四角全透/透明占比/主体占比），产出 `assets_manifest.json`。
 - **Pillow 确定性渲染器**：[renderer/](renderer/render_cli.py)——模板盒模型（templates/xhs_3x4/）+ CJK 程序化文字排版（自动换行/避头尾/字号地板/溢出 FAIL）+ 素材 contain/trimTransparent/软阴影 + V1–V9 校验。
 - **发布包组装**：[pipeline/assemble_publish.py](pipeline/assemble_publish.py)——校验四图尺寸/数量/顺序与文案契约，产出 `publish_data.json`（status=ready_for_review）。
+- **浏览器发布**：[pipeline/publish_xhs.py](pipeline/publish_xhs.py)——Playwright 驱动本机 Chrome/Edge（无需下载 Chromium）：首次人工扫码后持久化登录态、按序上传 4 图、填写标题正文（轮询回读）、文件信号人工确认闸口、强成功信号判定（防误入草稿箱）、回写 `published` 与 publish_result.json；含 `doctor` 发布前体检与 `mark` 人工裁定子命令。登录失效/验证码/滑块一律暂停交人工，不做绕过。
 
 **外部依赖：**
 
 - **文本生成工具**：小红书文案生成、标题生成、内容结构整理、首页文字拆分（由所接入的模型执行）。
-- **发布工具**：接收标题、正文、图片并执行发布。**v0.1 未实现自动发布**——发布前必须人工确认；Playwright 浏览器自动发布列入 v0.2 规划。发布工具不可用或失败时，输出完整待发布内容并等待人工处理。
+- **浏览器与平台**：发布通过本机 Chrome/Edge 操作小红书创作服务平台网页完成，无官方发布 API；首次登录需人工扫码，发布前必须人工确认，不做无人值守自动发布。
 
 ## 10. 发布前人工确认（Human Review）
 
@@ -545,6 +546,8 @@ V0.1 → 真实案例测试 → 发现问题 → 定位问题节点 → 修改�
 | v2 素材流改造（run-004） | ③④ 节点改为 gpt-image-2 透明背景直出 + alpha 门禁验收，取消白底生成与后处理抠图 | 探针实测 gpt-image-2 支持 transparent background，直出素材边缘优于 flood-fill 抠图 |
 | v2 四页闭环（run-004） | render_cli 支持一次渲染四页并合并校验；新增 assemble_publish.py 发布准备包（status=ready_for_review） | 完成 v0.1 从主题到发布准备的完整闭环 |
 | v2 渲染修复 | 修复逐字绘制 bearing 补偿导致的标点飞顶 bug（"，""。"被抬到字框顶部），改为统一 anchor 原点、由 Pillow 内部 offset 保证基线对齐 | 全角标点 top bearing 大，逐字 y-t 补偿把整行墨迹顶部拉到同一水平线 |
+| v2 真实发布闭环（run-004，2026-10-02） | 新增 publish_xhs.py：Playwright 驱动本机 Chrome/Edge，扫码登录态持久化、上传 4 图/填标题正文、人工确认闸口、强成功信号判定；run-004 真实账号发布成功，status 流转 published | 补齐「最后一公里」，硬要求完整流程跑通并真实发布 |
+| v2 发布稳定性增强 | 智能等待替代固定 sleep、登录失效明确提示、StepError 分阶段失败记录（stage.json）、新增 doctor 体检与 mark 人工裁定子命令；失败不修改 publish_data.json | 已验证闭环上的稳定性与可恢复性优化，不改变既有行为 |
 
 ## 17. Skill 构建思维
 

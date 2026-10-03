@@ -126,6 +126,9 @@ xhs-one-click-publish/
 pip install -r requirements.txt        # Pillow + playwright（浏览器复用本机 Chrome/Edge）
 cp .env.example .env                   # 填入 APIMART_API_KEY（仅素材生成需要）
 
+# 0. 发布前体检（纯本地：契约/图片尺寸/浏览器/依赖/.gitignore，不开浏览器、不发布）
+python -m pipeline.publish_xhs doctor --run output/run-004
+
 # ① 生成素材（已有验收通过的素材则自动跳过；--force 强制重新生成）
 python pipeline/generate_assets.py --run output/run-004
 
@@ -139,6 +142,8 @@ python pipeline/assemble_publish.py --run output/run-004
 python -m pipeline.publish_xhs publish --run output/run-004
 #   仅预先完成登录并保存登录态，可先执行：
 #   python -m pipeline.publish_xhs login --run output/run-004
+#   浏览器关闭后，对证据不足的结果做人工裁定（不重开浏览器）：
+#   python -m pipeline.publish_xhs mark --run output/run-004 --status published|failed --note "..."
 ```
 
 任一内容环节校验 FAIL 时退出码 1 并给出具体原因（如 `[title] 字符超预算: 27 > maxChars=8`），修正 page_data 后重跑即可；不盲目重跑全流程。
@@ -187,7 +192,18 @@ python -m pipeline.publish_xhs publish --run output/run-004
 6. **发布与强成功判定**：放行后点击「发布」（含可能的二次确认弹窗），仅当捕获**强成功信号**（跳转作品管理页 / 出现「发布成功」提示）才判定成功；否则判定失败/未知并保留浏览器现场，等待人工裁定，**绝不把"点过按钮"当成发布成功**（防止误入草稿箱）
 7. **结果回写**：成功后 publish_data.json 更新为 `status=published` + `published_at`，并写 publish_result.json
 
-遇到验证码、滑块、登录失效：脚本直接暂停并保留现场，交人工处理，**不做任何绕过**。
+遇到验证码、滑块、登录失效：脚本直接暂停并保留现场，交人工处理，**不做任何绕过**。登录态过期被重定向到登录页时，会明确提示「登录态已失效，请重新扫码」，**不会误判为发布失败**。
+
+**等待机制**：上传完成、字段回读、页面跳转、二次弹窗均为轮询智能等待（预览连续稳定、回读文本匹配、URL settle、弹窗出现），不依赖固定 sleep。
+
+**失败可恢复性**：
+
+- 任何步骤失败都**不会修改 publish_data.json**；失败信息写入 publish_result.json（含 `stage` 阶段、`reason` 原因、截图路径），进度写入 `<run>/.publish/stage.json`
+- 素材生成不在发布脚本职责内，重跑不会重新生成素材；登录态已持久化，重跑通常无需再扫码
+- 平台编辑器为无状态页面，重跑会从「打开发布页」重新上传/填写，这是正常且安全的
+- 发布后证据不足（25 秒内无强信号）时，可用浏览器内信号或事后 `mark` 子命令人工裁定
+
+**环境要求**：Windows + Python 3.10+；本机已安装 Google Chrome 或 Microsoft Edge（脚本通过 channel/显式路径启动，**无需下载 Playwright 自带 Chromium**）；素材生成另需可用网络与 APIMart key，发布步骤需能访问 creator.xiaohongshu.com。
 
 > 2026-10-02 run-004 的真实验证中：登录、上传、填写均由脚本自动完成；发布按钮由人工在浏览器点击，结果经人工目检确认（记录于 publish_result.json，信号 `manual_click_and_confirmation`）。脚本内置的自动点击与强信号判定逻辑保留，供后续复跑使用。
 
